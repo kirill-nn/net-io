@@ -5,4 +5,13 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(${PROJECT_NAME} INTERFACE)
 
-target_include_directories(${PROJECT_NAME} INTERFACE .)
+target_include_directories(${PROJECT_NAME} INTERFACE
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config)
+install(EXPORT ${PROJECT_NAME}Config
+        NAMESPACE ${PROJECT_NAME}::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/include/ws/session.hpp
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/net-io/ws)
